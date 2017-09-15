@@ -1,0 +1,142 @@
+Go to the htdoc or var/www/html 
+
+run this command
+
+
+composer create-project laravel/lumen lumen_rest_ce
+
+run this command
+
+php -S localhost:8080 -t public/
+
+Go to the http://localhost:8080
+
+
+
+
+Next, uncomment the following lines in bootstrap/app.php
+
+$app->withFacades();
+
+$app->withEloquent();
+
+
+php artisan make:migration create_table_cars --create=cars
+
+
+go to the cars table migration file
+
+
+change this 
+
+
+Schema::create('cars', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('make');
+            $table->string('model');
+            $table->string('year');
+            $table->timestamps();
+        });
+
+
+Now run this command 
+
+
+php artisan migrate
+
+
+
+Create model name Car.php and add following command
+
+
+<?php namespace App;
+ 
+use Illuminate\Database\Eloquent\Model;
+ 
+class Car extends Model
+{ 
+ 	protected $fillable = ['make', 'model', 'year'];	 
+}
+?>
+
+
+Now create controller name CarController.php
+
+Add following command
+
+
+<?php
+ 
+namespace App\Http\Controllers;
+ 
+use App\Car;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+ 
+class CarController extends Controller{
+
+    public function createCar(Request $request){
+ 
+        $car = Car::create($request->all());
+ 
+        return response()->json($car);
+ 
+    }
+ 
+    public function updateCar(Request $request, $id){
+
+        $car  = Car::find($id);
+        $car->make = $request->json('make');
+        $car->model = $request->json('model');
+        $car->year = $request->json('year');
+        $car->save();
+ 
+        return response()->json($car);
+    }  
+
+    public function deleteCar($id){
+        $car  = Car::find($id);
+        $car->delete();
+ 
+        return response()->json('Removed successfully.');
+    }
+
+    public function index(){
+ 
+        $cars  = Car::all();
+ 
+        return response()->json($cars);
+ 
+    }
+}
+?>
+
+
+Go to the routes/web.php
+
+
+$router->group(['prefix' => 'api/v1'], function($router)
+{
+$router->post('car','CarController@createCar');
+
+$router->put('car/{id}','CarController@updateCar');
+
+$router->delete('car/{id}','CarController@deleteCar');
+
+$router->get('car','CarController@index');
+});
+
+
+open postman 
+
+
+URL : http://localhost:8080/api/v1/car
+
+request : {"make":"toyota", "model":"camry", "year":"2016"}
+
+
+
+Delete URL : http://localhost:8080/api/v1/car/2
+
+
+
