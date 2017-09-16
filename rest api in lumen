@@ -1,3 +1,17 @@
+Lumen is the perfect solution for building Laravel based micro-services and blazing fast APIs. In fact, it's one of the fastest micro-frameworks available. 
+
+It has been designed to develop micro services like small application or web service .
+
+In this tutorial, we’ll implement a simple RESTful API. This API based on create ,  update , delete car Information.
+
+
+Lumen is all about speed. It's faster and can handle more requests per second than Laravel.
+
+Besides that, more features are disabled by default and have to be activated before they can be used. As an example: Facades (like DB::table())
+You first need to uncomment  line in bootstrap/app.php to enable them .
+
+Now installation of Lumen 
+
 Go to the htdoc or var/www/html 
 
 run this command
